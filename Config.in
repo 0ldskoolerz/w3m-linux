@@ -1,0 +1,20 @@
+menu "W3M Linux desktop"
+
+config BR2_PACKAGE_W3M
+	bool "w3m"
+	select BR2_PACKAGE_XLIB_LIBX11
+	select BR2_PACKAGE_LUA
+	help
+	  W3M: gestor de ventanas X11 estilo Windows 3.x
+	  (github.com/0ldskoolerz/W3M). Plugins Lua configurables.
+
+config BR2_PACKAGE_W3M_APPS
+	bool "w3m-apps"
+	select BR2_PACKAGE_BUSYBOX
+	help
+	  Suite de aplicaciones Win 3.x para W3M: explorador, terminal,
+	  administrador de tareas, calculadora y bloc de notas
+	  (github.com/0ldskoolerz/w3m-apps). Depende de busybox para la
+	  lógica de archivos/procesos.
+
+endmenu

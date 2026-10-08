@@ -1,0 +1,18 @@
+#!/bin/sh
+# startw3m — lanza el escritorio W3M sobre X
+# Prepara config y plugins en /root/.w3m y arranca el WM.
+
+W3M_SHARE=/usr/share/w3m
+HOME_DIR="$HOME/.w3m"
+
+mkdir -p "$HOME_DIR/plugins" "$HOME_DIR/config"
+
+if [ -d "$W3M_SHARE/plugins" ]; then
+    cp -f "$W3M_SHARE/plugins/"*.lua "$HOME_DIR/plugins/" 2>/dev/null
+fi
+if [ -f "$W3M_SHARE/w3m.conf" ]; then
+    cp -f "$W3M_SHARE/w3m.conf" "$HOME_DIR/config/w3m.conf"
+fi
+
+cd "$HOME_DIR"
+exec /usr/bin/w3m config/w3m.conf
