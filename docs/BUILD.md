@@ -12,6 +12,12 @@ En Arch/CachyOS:
 sudo pacman -S base-devel rsync cpio python unzip wget
 ```
 
+**Nota sobre git**: los paquetes w3m/w3m-apps/w3m-net se descargan como
+**tarballs de tag** de GitHub durante la build (mecanismo `$(call github,...)`
+de Buildroot) — no necesitas git ni en el host ni en la distro. Si
+prefieres clonar con submodules o usar ramas, entonces sí instala git
+en el host: `sudo pacman -S git`.
+
 ## Construir
 
 ```sh
@@ -49,6 +55,15 @@ Boot → auto-login root → escritorio W3M con las apps.
 - **Kernel config**: `board/w3m/linux-w3m.config` es una base; es
   probable que necesites `make linux-menuconfig` para tu hardware
   específico (GPU concreta, wifi concreta).
+- **Red al arranque**: `/etc/init.d/S40net` (overlay) levanta eth0 y
+  wlan0 automaticamente: DHCP con 3 reintentos via udhcpc; wifi via
+  wpa_supplicant si editaste `/etc/wpa_supplicant.conf`. Sin cable y
+  sin wifi configurada, el arranque sigue (no se bloquea).
+- **Dependencias cubiertas en el defconfig**:
+  - w3m (WM): lua (plugins), xlib-libX11
+  - w3m-apps: busybox (ls/cp/mv/tar/awk/ps...), file, xlib-libX11
+  - w3m-net: net-tools (ifconfig/route/arp/netstat/mii-tool),
+    traceroute, nmap, tcpdump, wpa_supplicant, iw
 - **Versión de Buildroot**: probado con receta 2024.02; los .mk usan
   solo APIs estables de paquetes (generic-package).
 

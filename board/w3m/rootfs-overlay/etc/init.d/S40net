@@ -1,0 +1,56 @@
+#!/bin/sh
+# S40net — levanta la red al arrancar: DHCP automatico en eth0 y wlan0.
+# Corre tras S30/S35 (sysinit). Usa udhcpc (busybox) con reintentos.
+
+start_iface() {
+    IFACE="$1"
+    # ¿existe la interfaz?
+    if ! ip link show "$IFACE" >/dev/null 2>&1; then
+        echo "S40net: $IFACE no existe, omitiendo"
+        return 0
+    fi
+    ip link set "$IFACE" up
+
+    # wifi: si hay una red configurada en /etc/wpa_supplicant.conf, asociar
+    if [ "$IFACE" = "wlan0" ] && [ -f /etc/wpa_supplicant.conf ]; then
+        echo "S40net: asociando wifi en $IFACE..."
+        wpa_supplicant -B -i "$IFACE" -c /etc/wpa_supplicant.conf >/dev/null 2>&1
+        sleep 3
+    fi
+
+    # DHCP con reintentos (3 intentos, 10s por lease)
+    echo "S40net: pidiendo DHCP en $IFACE..."
+    n=0
+    while [ $n -lt 3 ]; do
+        if udhcpc -i "$IFACE" -n -q -t 10 -T 10 >/dev/null 2>&1; then
+            echo "S40net: $IFACE configurada por DHCP"
+            return 0
+        fi
+        n=$((n + 1))
+        echo "S40net: reintento DHCP ($n/3) en $IFACE..."
+        sleep 2
+    done
+    echo "S40net: sin DHCP en $IFACE (¿cable desconectado? red wifi ausente?)"
+    return 1
+}
+
+case "$1" in
+    start)
+        start_iface eth0
+        start_iface wlan0
+        ;;
+    stop)
+        killall udhcpc 2>/dev/null
+        killall wpa_supplicant 2>/dev/null
+        ip link set eth0 down 2>/dev/null
+        ip link set wlan0 down 2>/dev/null
+        ;;
+    restart|reload)
+        "$0" stop
+        "$0" start
+        ;;
+    *)
+        echo "Uso: $0 {start|stop|restart}"
+        exit 1
+        ;;
+esac
