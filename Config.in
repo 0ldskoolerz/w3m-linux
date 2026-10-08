@@ -8,6 +8,15 @@ config BR2_PACKAGE_W3M
 	  W3M: gestor de ventanas X11 estilo Windows 3.x
 	  (github.com/0ldskoolerz/W3M). Plugins Lua configurables.
 
+config BR2_PACKAGE_W3M_NET
+	bool "w3m-net"
+	depends on BR2_PACKAGE_BUSYBOX
+	help
+	  Suite de herramientas de red estilo Trinux para W3M: ping,
+	  traceroute, interfaces, puertos, escaneo de LAN, sniffer,
+	  monitor de trafico, netcat, DNS, rutas, ARP y estado de
+	  enlace (github.com/0ldskoolerz/w3m-net).
+
 config BR2_PACKAGE_W3M_APPS
 	bool "w3m-apps"
 	select BR2_PACKAGE_BUSYBOX

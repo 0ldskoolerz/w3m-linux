@@ -46,6 +46,12 @@ BR2_PACKAGE_XTERM=y
 # escritorio propio
 BR2_PACKAGE_W3M=y
 BR2_PACKAGE_W3M_APPS=y
+BR2_PACKAGE_W3M_NET=y
+
+# motores de la suite de red (w3m-net)
+BR2_PACKAGE_NMAP=y
+BR2_PACKAGE_TCPDUMP=y
+BR2_PACKAGE_BUSYBOX_SHOW_OTHERS=y
 
 # audio (ALSA, no pulseaudio)
 BR2_PACKAGE_ALSA_UTILS=y

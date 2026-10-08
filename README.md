@@ -17,6 +17,7 @@ nuestro escritorio, nada más.
 | Filesystems | e2fsprogs, dosfstools, util-linux (fdisk/blkid) | formatear/preparar discos |
 | Gráficos | xserver_xorg-server + drivers fbdev/vesa/evdev/kbd | X mínimo, sin GLX pesado |
 | Escritorio | w3m (WM) + w3m-apps (fm/term/task/calc/notepad) | nuestro stack |
+| Red | w3m-net (ping/dns/route/arp/scan/sniff/ports/traf/nc/link/ifaces) + nmap + tcpdump | suite estilo Trinux, ver ANALISIS.md de ese repo |
 | Audio | alsa-utils (amixer) | `audio.lua` con backend ALSA (sin pactl) |
 | Red | busybox udhcpc + wpa_supplicant + iw | wifi real sin NetworkManager |
 | Bluetooth | bluez (btmgmt) | para `bluetooth.lua` |
